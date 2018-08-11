@@ -83,7 +83,7 @@ query_not_dns_resolver_set(){
 
     for potential_dns in "${ip_list[@]}"; do
         echo "--- Checking DNS function of $potential_dns ---"
-        response=$(nslookup -timeout=3 -type=A $uncensored_domain $potential_dns)
+        response=$(nslookup -timeout=15 -type=A $uncensored_domain $potential_dns)
         if [ $? -ne 0 ]; then
             # if timeout, then it means the ip does not have dns
             # resolving or forwarding function we can therefore safely
