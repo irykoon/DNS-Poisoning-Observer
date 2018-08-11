@@ -39,6 +39,7 @@ chinese_ip_list=(
 not_a_dns_resolver_set=()
 
 censored_domain_list=(
+    "www.chinadigitaltimes.net"
     "www.youtube.com"
     "www.facebook.com"
     "www.twitter.com"
