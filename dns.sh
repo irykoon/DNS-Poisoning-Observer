@@ -5,8 +5,10 @@ non_chinese_ip_list=(
     "8.8.4.4"      # this is a non-chinese dns server, just for testing
 
     # TODO: fix the bug that 1.1.1.1 sometimes could not be reached
-    # out, making it treated as not a dns resolver
-    "1.1.1.1"     # this is a non-chinese dns server, just for testing
+    # out, making it treated as not a dns resolver. We now temporarily
+    # not include it as a workaround.
+
+    #"1.1.1.1" # this is a non-chinese dns server, just for testing
     "129.42.17.103"
     "129.42.17.106"
     "109.49.18.103"
