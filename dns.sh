@@ -45,10 +45,6 @@ censored_domain_list=(
 )
 uncensored_domain="www.baidu.com"
 
-mv result.txt result.txt.backup
-mv unique.txt unique.txt.backup
-mv domain.txt domain.txt.backup
-
 position_to_gfw(){
     echo "Are you behind the GFW?"
     select option in "I am behind GFW." "I am beyond GFW." "I don't know."; do
@@ -111,6 +107,10 @@ query_not_dns_resolver_set(){
 # trigger_poisoned_response() requires one augument as $1 -- one specific censored domain
 trigger_poisoned_response() {
     local censored_domain="$1"
+    local identifier
+    identifier="$(date -u +%Y-%m-%d_%H-%M-%S)_${censored_domain}"
+    local result_file="${identifier}_result.txt"
+    local unique_file="${identifier}_unique.txt"
     count=0
     echo "==========Try to trigger poisoned DNS responses =================="
     for i in {1..100}; do
@@ -123,12 +123,12 @@ trigger_poisoned_response() {
             continue
             # $not_a_dns_resolver="${not_a_dns_resolver_set[$count]}"
         else
-            echo "$response" | grep -i address | tail -n 1 | sed s/Address:\ // | tee -a result.txt
+            echo "$response" | grep -i address | tail -n 1 | sed s/Address:\ // | tee -a "$result_file"
         fi
     done
 
     echo "================Finished Query=============================="
-    sort -u result.txt | tee unique.txt
+    sort -u "$result_file" | tee "$unique_file"
 }
 
 # while read ip; do
@@ -138,6 +138,6 @@ position_to_gfw
 query_not_dns_resolver_set
 
 for censored_domain in "${censored_domain_list[@]}"; do
-    echo "Start quering $censored_domain" | tee -a result.txt
+    echo "Start quering $censored_domain"
     trigger_poisoned_response "$censored_domain"
 done
