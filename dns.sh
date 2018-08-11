@@ -58,7 +58,7 @@ position_to_gfw(){
                 is_behind_gfw=true
                 break;;
             "I am beyond GFW.")
-                is_beyond_gfw=false
+                is_behind_gfw=false
                 break;;
             "I don't know.")
                 echo "Trying to decide automatically..."
