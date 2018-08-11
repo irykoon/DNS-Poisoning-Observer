@@ -38,7 +38,11 @@ chinese_ip_list=(
 
 not_a_dns_resolver_set=()
 
-censored_domain="www.youtube.com"
+censored_domain_list=(
+    "www.youtube.com"
+    "www.facebook.com"
+    "www.twitter.com"
+)
 uncensored_domain="www.baidu.com"
 
 mv result.txt result.txt.backup
@@ -132,4 +136,8 @@ trigger_poisoned_response() {
 # done <unique.txt
 position_to_gfw
 query_not_dns_resolver_set
-trigger_poisoned_response chachacha
+
+for censored_domain in "${censored_domain_list[@]}"; do
+    echo "Start quering $censored_domain" | tee -a result.txt
+    trigger_poisoned_response "$censored_domain"
+done
