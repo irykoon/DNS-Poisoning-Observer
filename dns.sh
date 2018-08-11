@@ -3,7 +3,10 @@
 non_chinese_ip_list=(
     "8.8.8.8"      # this is a non-chinese dns server, just for testing
     "8.8.4.4"      # this is a non-chinese dns server, just for testing
-    "1.1.1.1"      # this is a non-chinese dns server, just for testing
+
+    # TODO: fix the bug that 1.1.1.1 sometimes could not be reached
+    # out, making it treated as not a dns resolver
+    "1.1.1.1"     # this is a non-chinese dns server, just for testing
     "129.42.17.103"
     "129.42.17.106"
     "109.49.18.103"
@@ -83,6 +86,7 @@ query_not_dns_resolver_set(){
 
     for potential_dns in "${ip_list[@]}"; do
         echo "--- Checking DNS function of $potential_dns ---"
+        # TODO: do different type queries eg. AAA
         response=$(nslookup -timeout=15 -type=A $uncensored_domain $potential_dns)
         if [ $? -ne 0 ]; then
             # if timeout, then it means the ip does not have dns
@@ -98,7 +102,9 @@ query_not_dns_resolver_set(){
     done
 }
 
+# trigger_poisoned_response() requires one augument as $1 -- one specific censored domain
 trigger_poisoned_response() {
+    local censored_domain="$1"
     count=0
     echo "==========Try to trigger poisoned DNS responses =================="
     for i in {1..100}; do
@@ -124,4 +130,4 @@ trigger_poisoned_response() {
 # done <unique.txt
 position_to_gfw
 query_not_dns_resolver_set
-trigger_poisoned_response
+trigger_poisoned_response chachacha
