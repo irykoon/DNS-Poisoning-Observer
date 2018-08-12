@@ -127,7 +127,6 @@ trigger_poisoned_response() {
             echo "[x] Time out happened. Switch to query from another IP."
             count=$(expr $(expr $count + 1) % ${#not_a_dns_resolver_set[@]})
             continue
-            # $not_a_dns_resolver="${not_a_dns_resolver_set[$count]}"
         else
             echo "$response" | grep -i address | tail -n 1 | sed s/Address:\ // | tee -a "$result_file"
         fi
