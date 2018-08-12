@@ -14,8 +14,6 @@ non_chinese_ip_list=(
     "109.49.18.103"
 )
 
-#nslookup -type=A www.google.com 129.42.17.103 | grep -i address | tail -n 1
-
 # when outside of China (beyond the GFW), since DNS poisoing is
 # two-way. Simple use a Chinese IP that does not have DNS resolving or
 # forwarding function. Chinese IP ranges can be found here:
