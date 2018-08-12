@@ -90,7 +90,7 @@ query_not_dns_resolver_set(){
     for potential_dns in "${ip_list[@]}"; do
         echo "--- Checking DNS function of $potential_dns ---"
         # TODO: do different type queries eg. AAA
-        response=$(nslookup -timeout=5 -type=A $uncensored_domain $potential_dns)
+        response=$(nslookup -timeout=5 -type=A "$uncensored_domain" "$potential_dns")
         if [ $? -ne 0 ]; then
             # if timeout, then it means the ip does not have dns
             # resolving or forwarding function we can therefore safely
@@ -116,7 +116,7 @@ trigger_poisoned_response() {
     echo "==========Try to trigger poisoned DNS responses =================="
     for i in {1..100}; do
         echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$count]}: "
-        response=$(nslookup -timeout=1 -type=A $censored_domain ${not_a_dns_resolver_set[$count]})
+        response=$(nslookup -timeout=1 -type=A "$censored_domain" "${not_a_dns_resolver_set[$count]}")
         if [ $? -ne 0 ]; then
             echo ""                 # for newline formatting
             echo "[x] Time out happened. Switch to query from another IP."
