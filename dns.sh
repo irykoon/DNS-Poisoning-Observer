@@ -112,6 +112,11 @@ trigger_poisoned_response() {
     identifier="$(date -u +%Y-%m-%d_%H-%M-%S)_${censored_domain}"
     local result_file="${identifier}_result.txt"
     local unique_file="${identifier}_unique.txt"
+    local traffic_file="${identifier}_traffic.pcap"
+    # capture DNS traffic
+    sudo tcpdump -i eth0 -nn -s0 port 53 -w "$traffic_file" &
+    # wait for tcpdump to start
+    sleep 1
     count=0
     echo "==========Try to trigger poisoned DNS responses =================="
     for i in {1..100}; do
@@ -130,6 +135,8 @@ trigger_poisoned_response() {
 
     echo "================Finished Query=============================="
     sort -u "$result_file" | tee "$unique_file"
+    # stop capturing DNS traffic
+    sudo pkill tcpdump
 }
 
 # while read ip; do
