@@ -140,6 +140,11 @@ trigger_poisoned_response() {
 # while read ip; do
 #     whois $ip | tee -a whois.txt
 # done <unique.txt
+
+directory="$HOME/dns_data/$(date -u +%Y-%m-%d_%H)"
+mkdir -p "$directory"
+cd "$directory" || exit 1
+
 position_to_gfw
 query_not_dns_resolver_set
 
