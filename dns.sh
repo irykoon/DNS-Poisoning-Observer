@@ -6,7 +6,11 @@ non_chinese_ip_list=(
 
     # TODO: fix the bug that 1.1.1.1 sometimes could not be reached
     # out, making it treated as not a dns resolver. We now temporarily
-    # not include it as a workaround.
+    # not include it as a workaround. The root problem is actually
+    # because we determine if an ip address has the DNS function by a
+    # single query. Since the ISPs may hijacking or null-routing the
+    # DNS request, a more accurate algorithm should be came up with to
+    # fix the problem.
 
     #"1.1.1.1" # this is a non-chinese dns server, just for testing
     "129.42.17.103"
