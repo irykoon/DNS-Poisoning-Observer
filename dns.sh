@@ -84,7 +84,7 @@ query_not_dns_resolver_set(){
     echo "|         2. It has NO DNS resolving or forwarding function      |"
     echo "\================================================================/"
 
-    if [ $is_behind_gfw ]; then     # if behind_gfw
+    if [ "$is_behind_gfw" == true ]; then     # if behind_gfw
         ip_list=(${non_chinese_ip_list[@]})
     else
         ip_list=(${chinese_ip_list[@]})
