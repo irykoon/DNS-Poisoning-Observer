@@ -155,7 +155,7 @@ trigger_poisoned_response() {
         if [ $? -ne 0 ]; then
             count_timeout=$(expr $count_timeout + 1)
             echo ""                 # for newline formatting
-            echo "[x] Time out happened. Total timeout: $count_timeout Switch non-resolver IP."
+            echo "[x] Time out happened. Total timeout: $count_timeout. Switch non-resolver IP."
             index_dst_ip=$(expr $(expr $index_dst_ip + 1) % ${#not_a_dns_resolver_set[@]})
             if [[ $count_timeout -eq $i ]] && \
                    [[ $count_timeout -gt $max_timeout ]]; then
