@@ -133,8 +133,23 @@ trigger_poisoned_response() {
     # is large enough, we consider the domain name as NOT poisoned.
     local count_timeout=0
     local max_timeout=5
+    # The fist $num_testing_loop loop is for determination of type 1
+    # or type 2 poisoning.
+    local num_testing_loop=40
+    # In 2018, the value should be 4, but considering previous proper
+    # value may up to 40, we set it as 10 here.  Statistical analysis
+    # should be done to give the appropriate value and possibility.
+    local num_assumed_type_one_result=10
     echo "==========Try to trigger poisoned DNS responses =================="
     for i in {1..100}; do
+        # Optimize for Type 1 poisoning responses by counting numer of
+        # unique result. If the number is relatively small, even after
+        # a large amount of query, we consider the poisoning method as
+        # type 1 and skip the rest of the queries to save resourse and
+        # time
+        if [[ $i -eq $num_testing_loop ]] && [[ $(sort -u "$result_file" | wc -l) -le $num_assumed_type_one_result ]]; then
+            echo "Only $(sort -u "$result_file" | wc -l) unique result is found after $num_testing_loop quering. Mark as tyoe 1 poisoning and stop further quering."
+        fi
         echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$index_dst_ip]}: "
         response=$(nslookup -timeout=1 -type=A "$censored_domain" "${not_a_dns_resolver_set[$index_dst_ip]}")
         if [ $? -ne 0 ]; then
