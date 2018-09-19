@@ -1,44 +1,43 @@
 #!/bin/bash
 
-non_chinese_ip_list=(
-    "8.8.8.8"      # this is a non-chinese dns server, just for testing
-    "8.8.4.4"      # this is a non-chinese dns server, just for testing
+# non_chinese_ip_list=(
+#     "8.8.8.8"      # this is a non-chinese dns server, just for testing
+#     "8.8.4.4"      # this is a non-chinese dns server, just for testing
 
-    # TODO: fix the bug that 1.1.1.1 sometimes could not be reached
-    # out, making it treated as not a dns resolver. We now temporarily
-    # not include it as a workaround. The root problem is actually
-    # because we determine if an ip address has the DNS function by a
-    # single query. Since the ISPs may hijacking or null-routing the
-    # DNS request, a more accurate algorithm should be came up with to
-    # fix the problem.
+#     # TODO: fix the bug that 1.1.1.1 sometimes could not be reached
+#     # out, making it treated as not a dns resolver. We now temporarily
+#     # not include it as a workaround. The root problem is actually
+#     # because we determine if an ip address has the DNS function by a
+#     # single query. Since the ISPs may hijacking or null-routing the
+#     # DNS request, a more accurate algorithm should be came up with to
+#     # fix the problem.
 
-    #"1.1.1.1" # this is a non-chinese dns server, just for testing
-    "129.42.17.103"
-    "129.42.17.106"
-    "109.49.18.103"
-)
+#     #"1.1.1.1" # this is a non-chinese dns server, just for testing
+#     "129.42.17.103"
+#     "129.42.17.106"
+#     "109.49.18.103"
+# )
 
 # when outside of China (beyond the GFW), since DNS poisoing is
 # two-way. Simple use a Chinese IP that does not have DNS resolving or
 # forwarding function. Chinese IP ranges can be found here:
 # https://lite.ip2location.com/china-ip-address-ranges
-chinese_ip_list=(
-    "202.107.249.28"
-    "60.245.128.2"
-    "60.247.10.18"
-    "114.114.115.119"           # this is a chinese dns server, just for testing
-    "66.78.32.134"
-    "103.22.95.254"
-    "180.76.76.76"              # this is a chinese dns server, just for testing
-    "93.119.20.1"
-    "202.107.249.27"
-    "210.2.4.8"                 # this is a chinese dns server, just for testing
-    "202.107.249.29"
-    "202.107.249.30"
-    "202.107.249.31"
-)
+# chinese_ip_list=(
+#     "202.107.249.28"
+#     "60.245.128.2"
+#     "60.247.10.18"
+#     "114.114.115.119"           # this is a chinese dns server, just for testing
+#     "66.78.32.134"
+#     "103.22.95.254"
+#     "180.76.76.76"              # this is a chinese dns server, just for testing
+#     "93.119.20.1"
+#     "202.107.249.27"
+#     "210.2.4.8"                 # this is a chinese dns server, just for testing
+#     "202.107.249.29"
+#     "202.107.249.30"
+#     "202.107.249.31"
+# )
 
-not_a_dns_resolver_set=()
 
 # censored_domain_list=(
 #     "www.chinadigitaltimes.net"
@@ -47,8 +46,12 @@ not_a_dns_resolver_set=()
 #     "www.twitter.com"
 # )
 
-## ONLY work in bash 4.x
+## ONLY work for bash 4.x
+readarray -t non_chinese_ip_list < non_chinese_ip.txt
+readarray -t chinese_ip_list < chinese_ip.txt
 readarray -t censored_domain_list < blacklist.txt
+
+not_a_dns_resolver_set=()
 
 uncensored_domain="www.baidu.com"
 
