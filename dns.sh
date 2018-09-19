@@ -40,12 +40,16 @@ chinese_ip_list=(
 
 not_a_dns_resolver_set=()
 
-censored_domain_list=(
-    "www.chinadigitaltimes.net"
-    "www.youtube.com"
-    "www.facebook.com"
-    "www.twitter.com"
-)
+# censored_domain_list=(
+#     "www.chinadigitaltimes.net"
+#     "www.youtube.com"
+#     "www.facebook.com"
+#     "www.twitter.com"
+# )
+
+## ONLY work in bash 4.x
+readarray -t censored_domain_list < blacklist.txt
+
 uncensored_domain="www.baidu.com"
 
 position_to_gfw(){
