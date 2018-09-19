@@ -178,7 +178,10 @@ trigger_poisoned_response() {
             fi
             continue
         else
-            echo "$response" | grep -i address | tail -n 1 | sed s/Address:\ // | tee -a "$result_file"
+            # TODO: current implementation heavily relies on the
+            # output of nslookup, though we will analysis on .pcap raw
+            # date, still it would be nice to not rely on it so much.
+            echo "$response" | grep -i address | tail -n 2 | sed s/Address:\ // | tee -a "$result_file"
         fi
     done
 
