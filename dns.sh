@@ -153,7 +153,8 @@ trigger_poisoned_response() {
         # type 1 and skip the rest of the queries to save resourse and
         # time
         if [[ $i -eq $num_testing_loop ]] && [[ $(sort -u "$result_file" | wc -l) -le $num_assumed_type_one_result ]]; then
-            echo "Only $(sort -u "$result_file" | wc -l) unique result is found after $num_testing_loop querying. Mark as type 1 poisoning and stop further querying."
+            echo "Only $(sort -u "$result_file" | wc -l) unique result is found after $num_testing_loop querying."
+            echo "Mark $censored_domain as under type 1 poisoning and stop further querying."
             break
         fi
         echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$index_dst_ip]}: "
