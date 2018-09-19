@@ -149,6 +149,7 @@ trigger_poisoned_response() {
         # time
         if [[ $i -eq $num_testing_loop ]] && [[ $(sort -u "$result_file" | wc -l) -le $num_assumed_type_one_result ]]; then
             echo "Only $(sort -u "$result_file" | wc -l) unique result is found after $num_testing_loop quering. Mark as tyoe 1 poisoning and stop further quering."
+            break
         fi
         echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$index_dst_ip]}: "
         response=$(nslookup -timeout=1 -type=A "$censored_domain" "${not_a_dns_resolver_set[$index_dst_ip]}")
