@@ -153,7 +153,7 @@ trigger_poisoned_response() {
         # type 1 and skip the rest of the queries to save resourse and
         # time
         if [[ $i -eq $num_testing_loop ]] && [[ $(sort -u "$result_file" | wc -l) -le $num_assumed_type_one_result ]]; then
-            echo "Only $(sort -u "$result_file" | wc -l) unique result is found after $num_testing_loop quering. Mark as tyoe 1 poisoning and stop further quering."
+            echo "Only $(sort -u "$result_file" | wc -l) unique result is found after $num_testing_loop querying. Mark as type 1 poisoning and stop further querying."
             break
         fi
         echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$index_dst_ip]}: "
@@ -194,6 +194,6 @@ query_not_dns_resolver_set
 # TODO: we also need to filter unexpected items, eg. blank line and
 # line starts with #.
 for censored_domain in "${censored_domain_list[@]}"; do
-    echo "Start quering $censored_domain"
+    echo "Start querying $censored_domain"
     trigger_poisoned_response "$censored_domain"
 done
