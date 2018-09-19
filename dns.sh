@@ -127,15 +127,26 @@ trigger_poisoned_response() {
     sudo tcpdump -i eth0 -nn -s0 port 53 -w "$traffic_file" &
     # wait for tcpdump to start
     sleep 1
-    count=0
+    # index of dst ip list
+    local index_dst_ip=0
+    # count number of dst IP switching due to timeout, if the number
+    # is large enough, we consider the domain name as NOT poisoned.
+    local count_timeout=0
+    local max_timeout=5
     echo "==========Try to trigger poisoned DNS responses =================="
     for i in {1..100}; do
-        echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$count]}: "
-        response=$(nslookup -timeout=1 -type=A "$censored_domain" "${not_a_dns_resolver_set[$count]}")
+        echo -n "--- Query $censored_domain from ${not_a_dns_resolver_set[$index_dst_ip]}: "
+        response=$(nslookup -timeout=1 -type=A "$censored_domain" "${not_a_dns_resolver_set[$index_dst_ip]}")
         if [ $? -ne 0 ]; then
+            count_timeout=$(expr $count_timeout + 1)
             echo ""                 # for newline formatting
-            echo "[x] Time out happened. Switch to query from another IP."
-            count=$(expr $(expr $count + 1) % ${#not_a_dns_resolver_set[@]})
+            echo "[x] Time out happened. Total timeout: $count_timeout Switch non-resolver IP."
+            index_dst_ip=$(expr $(expr $index_dst_ip + 1) % ${#not_a_dns_resolver_set[@]})
+            if [[ $count_timeout -eq $i ]] && \
+                   [[ $count_timeout -gt $max_timeout ]]; then
+                echo "No fake repsonse detected in $count_timeout loops. $censored_domain may not be poinsoned." | tee -a "$result_file"
+                break           # break from the loop
+            fi
             continue
         else
             echo "$response" | grep -i address | tail -n 1 | sed s/Address:\ // | tee -a "$result_file"
