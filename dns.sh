@@ -71,10 +71,10 @@ position_to_gfw(){
                 # one should be able to ping www.google.com when beyond GFW
                 ping -w 3 www.google.com
                 if [ $? -ne 0 ]; then
-                    echo "It seems you are behind the GFW."
+                    echo "It seems you are BEHIND the GFW."
                     is_behind_gfw=true
                 else
-                    echo "It seems you are NOT behind the GFW."
+                    echo "It seems you are BEYOUND the GFW."
                     is_behind_gfw=false
                 fi
                 break;;
