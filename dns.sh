@@ -47,6 +47,13 @@
 # )
 
 ## ONLY work for bash 4.x
+for required_file in "non_chinese_ip.txt" "chinese_ip.txt" "blacklist.txt" ; do
+    if [ ! -f "$required_file" ]; then
+        echo "[error] can't find the required file: $required_file"
+        exit 1
+    fi
+done
+
 readarray -t non_chinese_ip_list < non_chinese_ip.txt
 readarray -t chinese_ip_list < chinese_ip.txt
 readarray -t censored_domain_list < blacklist.txt
