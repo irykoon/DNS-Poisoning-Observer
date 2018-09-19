@@ -97,6 +97,11 @@ query_not_dns_resolver_set(){
         ip_list=(${chinese_ip_list[@]})
     fi
 
+    # TODO: only randomly select a portion of IPs from the array list,
+    # rather than use all the IPs from the ip list files.
+
+    # TODO: we also need to filter unexpected items, eg. blank line
+    # and line starts with #.
     for potential_dns in "${ip_list[@]}"; do
         echo "--- Checking DNS function of $potential_dns ---"
         # TODO: do different type queries eg. AAA
@@ -186,6 +191,8 @@ cd "$directory" || exit 1
 position_to_gfw
 query_not_dns_resolver_set
 
+# TODO: we also need to filter unexpected items, eg. blank line and
+# line starts with #.
 for censored_domain in "${censored_domain_list[@]}"; do
     echo "Start quering $censored_domain"
     trigger_poisoned_response "$censored_domain"
