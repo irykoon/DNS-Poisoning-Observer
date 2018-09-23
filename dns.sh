@@ -132,6 +132,10 @@ trigger_poisoned_response() {
     local censored_domain="$1"
     local identifier
     identifier="$(date -u +%Y-%m-%d_%H-%M-%S)_${censored_domain}"
+    # TODO: A more accurate and less IO-intensive way to get
+    # result_file and unique_file is:
+    # tshark -r 2018-09-22_19-34-48_google.co.jp_traffic.pcap | grep response | awk '{print $NF}' > result.txt
+    # sort -u result.txt > unique.txt
     local result_file="${identifier}_result.txt"
     local unique_file="${identifier}_unique.txt"
     local traffic_file="${identifier}_traffic.pcap"
