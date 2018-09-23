@@ -2,6 +2,7 @@
 
 # example: bash occurrence.sh $(find $(pwd) -name "*pcap")
 # $@ here should be raw .pcap files
+# please use it under the same dir with those .pcap files
 
 for file in "$@"; do
     echo "========== $file  ========="
