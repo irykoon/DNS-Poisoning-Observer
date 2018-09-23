@@ -136,6 +136,8 @@ trigger_poisoned_response() {
     # result_file and unique_file is:
     # tshark -r 2018-09-22_19-34-48_google.co.jp_traffic.pcap | grep response | awk '{print $NF}' > result.txt
     # sort -u result.txt > unique.txt
+    # However, note that we rely on a up-to-date result.txt to make
+    # querying decisions, eg. stop querying type 1 poisoning ealier.
     local result_file="${identifier}_result.txt"
     local unique_file="${identifier}_unique.txt"
     local traffic_file="${identifier}_traffic.pcap"
